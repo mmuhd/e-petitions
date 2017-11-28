@@ -20,7 +20,7 @@ RSpec.describe TrackersController, type: :controller do
     shared_examples_for "a tracking controller" do
       before do
         session[:form_requests] = { "1" => form_request }
-        get :show, petition_id: "1", id: "S7lqpOv8zEvROaq3bJE8", format: "gif"
+        get :show, params: { petition_id: "1", id: "S7lqpOv8zEvROaq3bJE8", format: "gif" }
       end
 
       it "assigns the @petition instance variable" do
@@ -61,7 +61,7 @@ RSpec.describe TrackersController, type: :controller do
 
       it "returns a 400 Bad Request response" do
         expect {
-          get :show, petition_id: "1", id: "wYonHKjTeW7mtTusqDv", format: "gif"
+          get :show, params: { petition_id: "1", id: "wYonHKjTeW7mtTusqDv", format: "gif" }
         }.to raise_error(ActionController::BadRequest)
       end
     end
@@ -71,7 +71,7 @@ RSpec.describe TrackersController, type: :controller do
 
       it "returns a 400 Bad Request response" do
         expect {
-          get :show, petition_id: "1", id: "S7lqpOv8zEvROaq3bJE8", format: "gif"
+          get :show, params: { petition_id: "1", id: "S7lqpOv8zEvROaq3bJE8", format: "gif" }
         }.to raise_error(ActionController::BadRequest)
       end
     end
@@ -81,7 +81,7 @@ RSpec.describe TrackersController, type: :controller do
 
       it "returns a 400 Bad Request response" do
         expect {
-          get :show, petition_id: "1", id: "S7lqpOv8zEvROaq3bJE8", format: "gif"
+          get :show, params: { petition_id: "1", id: "S7lqpOv8zEvROaq3bJE8", format: "gif" }
         }.to raise_error(ActionController::BadRequest)
       end
     end

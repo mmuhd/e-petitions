@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Load environment variables
 gem 'dotenv-rails', :require => 'dotenv/rails-now'
 
-gem 'rails', '4.2.11.1'
+gem 'rails', '5.0.7.2'
 
 gem 'rake'
 gem 'pg', '< 0.21'
@@ -60,7 +60,7 @@ group :test do
   gem 'launchy'
   gem 'webdrivers'
   gem 'webmock'
-  gem 'test_after_commit'
+  gem 'rails-controller-testing'
 end
 
 group :production do
