@@ -70,7 +70,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :trackers, only: %i[show], format: true, constraints: { id: /[0-9a-zA-Z]{10,20}/, format: 'gif' }
+      resources :trackers, only: %i[show], format: true, constraints: { id: /[-_0-9a-zA-Z]{20}/, format: 'gif' }
     end
 
     namespace :archived do
