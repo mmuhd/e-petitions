@@ -1,6 +1,9 @@
 require 'email_spec/cucumber'
 require 'rspec/core/pending'
 require 'capybara/poltergeist'
+require 'multi_test'
+
+MultiTest.disable_autorun
 
 Capybara.javascript_driver = ENV.fetch("JS_DRIVER", "chrome_headless").to_sym
 Capybara.default_max_wait_time = 5
