@@ -54,21 +54,21 @@ RSpec.describe SignaturesController, type: :controller do
       end
 
       before do
-        allow(Authlogic::Random).to receive(:friendly_token).and_return("D8MxrkwNexP1NgxpZq")
+        allow(Authlogic::Random).to receive(:friendly_token).and_return("D8MxrkwNexP1NgxpZqaa")
 
         session[:form_requests] = {
           "100000" => {
-            "form_token" => "jcr0DcYQXio18qKDBGw",
+            "form_token" => "jcr0DcYQXio18qKDBGwa",
             "form_requested_at" => "2019-04-16T06:00:00Z"
           },
           "100001" => {
-            "form_token" => "G0WnZSxal6vmZkFYnzY",
+            "form_token" => "G0WnZSxal6vmZkFYnzYa",
             "form_requested_at" => "2019-04-18T04:00:00Z"
           }
         }
 
-        cookies.encrypted["jcr0DcYQXio18qKDBGw"] = "2019-04-16T06:00:00Z"
-        cookies.encrypted["G0WnZSxal6vmZkFYnzY"] = "2019-04-18T04:00:00Z"
+        cookies.encrypted["jcr0DcYQXio18qKDBGwa"] = "2019-04-16T06:00:00Z"
+        cookies.encrypted["G0WnZSxal6vmZkFYnzYa"] = "2019-04-18T04:00:00Z"
 
         get :new, params: { petition_id: petition.id }
       end
@@ -88,14 +88,14 @@ RSpec.describe SignaturesController, type: :controller do
       it "sets the form token and requested at details in the session" do
         expect(session[:form_requests]).to match(a_hash_including(
           "#{petition.id}" => {
-            "form_token" => "D8MxrkwNexP1NgxpZq",
+            "form_token" => "D8MxrkwNexP1NgxpZqaa",
             "form_requested_at" => "2019-04-18T06:00:00Z"
           }
         ))
       end
 
       it "sets the signature's form token to the one in the session" do
-        expect(assigns[:signature].form_token).to eq("D8MxrkwNexP1NgxpZq")
+        expect(assigns[:signature].form_token).to eq("D8MxrkwNexP1NgxpZqaa")
       end
 
       it "sets the signature's form requested at timestamp to the one in the session" do
@@ -104,13 +104,15 @@ RSpec.describe SignaturesController, type: :controller do
 
       it "expires old form requests" do
         expect(session[:form_requests]["100000"]).to be_nil
-        expect(cookies.encrypted["jcr0DcYQXio18qKDBGw"]).to be_nil
+        expect(response.cookies).to have_key("jcr0DcYQXio18qKDBGwa")
+        expect(response.cookies["jcr0DcYQXio18qKDBGwa"]).to be_nil
       end
 
       it "leaves current form request untouched" do
-        expect(session[:form_requests]["100001"]["form_token"]).to eq("G0WnZSxal6vmZkFYnzY")
+        expect(session[:form_requests]["100001"]["form_token"]).to eq("G0WnZSxal6vmZkFYnzYa")
         expect(session[:form_requests]["100001"]["form_requested_at"]).to eq("2019-04-18T04:00:00Z")
-        expect(cookies.encrypted["G0WnZSxal6vmZkFYnzY"]).to eq("2019-04-18T04:00:00Z")
+        expect(cookies.encrypted["G0WnZSxal6vmZkFYnzYa"]).to eq("2019-04-18T04:00:00Z")
+        expect(response.cookies).not_to have_key("G0WnZSxal6vmZkFYnzYa")
       end
 
       it "renders the signatures/new template" do
@@ -179,7 +181,7 @@ RSpec.describe SignaturesController, type: :controller do
       before do
         session[:form_requests] = {
           "#{petition.id}" => {
-            "form_token" => "wYonHKjTeW7mtTusqDv",
+            "form_token" => "wYonHKjTeW7mtTusqDva",
             "form_requested_at" => "2019-04-18T06:00:00Z"
           }
         }
@@ -201,7 +203,7 @@ RSpec.describe SignaturesController, type: :controller do
         expect(assigns[:signature].uk_citizenship).to eq("1")
         expect(assigns[:signature].postcode).to eq("SW1A1AA")
         expect(assigns[:signature].location_code).to eq("GB")
-        expect(assigns[:signature].form_token).to eq("wYonHKjTeW7mtTusqDv")
+        expect(assigns[:signature].form_token).to eq("wYonHKjTeW7mtTusqDva")
         expect(assigns[:signature].form_requested_at).to eq("2019-04-18T06:00:00Z".in_time_zone)
       end
 
@@ -290,11 +292,11 @@ RSpec.describe SignaturesController, type: :controller do
 
       context "and the signature is not a duplicate" do
         before do
-          cookies.encrypted["wYonHKjTeW7mtTusqDv"] = "2019-04-18T06:00:00Z"
+          cookies.encrypted["wYonHKjTeW7mtTusqDva"] = "2019-04-18T06:00:00Z"
 
           session[:form_requests] = {
             "#{petition.id}" => {
-              "form_token" => "wYonHKjTeW7mtTusqDv",
+              "form_token" => "wYonHKjTeW7mtTusqDva",
               "form_requested_at" => "2019-04-18T06:00:00Z"
             }
           }
@@ -318,7 +320,7 @@ RSpec.describe SignaturesController, type: :controller do
           expect(assigns[:signature].uk_citizenship).to eq("1")
           expect(assigns[:signature].postcode).to eq("SW1A1AA")
           expect(assigns[:signature].location_code).to eq("GB")
-          expect(assigns[:signature].form_token).to eq("wYonHKjTeW7mtTusqDv")
+          expect(assigns[:signature].form_token).to eq("wYonHKjTeW7mtTusqDva")
           expect(assigns[:signature].form_requested_at).to eq("2019-04-18T06:00:00Z".in_time_zone)
           expect(assigns[:signature].image_loaded_at).to eq("2019-04-18T06:00:00Z".in_time_zone)
         end
@@ -337,7 +339,8 @@ RSpec.describe SignaturesController, type: :controller do
         end
 
         it "deletes the form request details" do
-          expect(cookies.encrypted["wYonHKjTeW7mtTusqDv"]).to be_nil
+          expect(response.cookies).to have_key("wYonHKjTeW7mtTusqDva")
+          expect(response.cookies["wYonHKjTeW7mtTusqDva"]).to be_nil
           expect(session[:form_requests]["#{petition.id}"]).to be_nil
         end
 

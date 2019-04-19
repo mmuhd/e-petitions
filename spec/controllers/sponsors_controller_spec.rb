@@ -128,13 +128,15 @@ RSpec.describe SponsorsController, type: :controller do
 
         it "expires old form requests" do
           expect(session[:form_requests]["100000"]).to be_nil
-          expect(cookies.encrypted["jcr0DcYQXio18qKDBGw"]).to be_nil
+          expect(response.cookies).to have_key("jcr0DcYQXio18qKDBGw")
+          expect(response.cookies["jcr0DcYQXio18qKDBGw"]).to be_nil
         end
 
         it "leaves current form request untouched" do
           expect(session[:form_requests]["100001"]["form_token"]).to eq("G0WnZSxal6vmZkFYnzY")
           expect(session[:form_requests]["100001"]["form_requested_at"]).to eq("2019-04-18T04:00:00Z")
           expect(cookies.encrypted["G0WnZSxal6vmZkFYnzY"]).to eq("2019-04-18T04:00:00Z")
+          expect(response.cookies).not_to have_key("G0WnZSxal6vmZkFYnzY")
         end
 
         it "renders the sponsors/new template" do
@@ -417,7 +419,8 @@ RSpec.describe SponsorsController, type: :controller do
           end
 
           it "deletes the form request details" do
-            expect(cookies.encrypted["wYonHKjTeW7mtTusqDv"]).to be_nil
+            expect(response.cookies).to have_key("wYonHKjTeW7mtTusqDv")
+            expect(response.cookies["wYonHKjTeW7mtTusqDv"]).to be_nil
             expect(session[:form_requests]["#{petition.id}"]).to be_nil
           end
 

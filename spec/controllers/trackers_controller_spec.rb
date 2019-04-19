@@ -40,7 +40,7 @@ RSpec.describe TrackersController, type: :controller do
       end
 
       it "sets the Cache-Control header" do
-        expect(response.headers["Cache-Control"]).to eq("no-store, no-cache")
+        expect(response.headers["Cache-Control"]).to eq("no-cache, no-store")
       end
     end
 
@@ -61,7 +61,7 @@ RSpec.describe TrackersController, type: :controller do
 
       it "returns a 400 Bad Request response" do
         expect {
-          get :show, params: { petition_id: "1", id: "wYonHKjTeW7mtTusqDv", format: "gif" }
+          get :show, params: { petition_id: "1", id: "wYonHKjTeW7mtTusqDva", format: "gif" }
         }.to raise_error(ActionController::BadRequest)
       end
     end
