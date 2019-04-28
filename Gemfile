@@ -56,7 +56,6 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'capybara'
-  gem 'poltergeist'
   gem 'factory_bot_rails'
   gem 'email_spec'
   gem 'launchy'
